@@ -22,10 +22,16 @@ public class UserService {
     @Inject
     private UserRepository userRepository;
 
-    public List<User> fetchUsers(int page) {
-        int perPage = 100;
+    public List<User> fetchUsers(int page, int size, String order) {
+        int perPage = size;
         page = page -1;
-        PanacheQuery<User> users = userRepository.findAll(Sort.ascending("id"));
+
+        Sort sort = Sort.ascending("id");
+        if (order.equals("desc")) {
+            sort = Sort.descending("id");
+        }
+        //PanacheQuery<User> users = userRepository.findAll(Sort.ascending("id"));
+        PanacheQuery<User> users = userRepository.findAll(sort);
         users.page(Page.ofSize(perPage));
         return users.page( Page.of(page, perPage) ).list();
     }

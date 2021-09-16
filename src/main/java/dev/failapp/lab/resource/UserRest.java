@@ -29,9 +29,11 @@ public class UserRest {
 
     @GET
     @Path("/api/v1/lab/users")
-    public List<User> list(@QueryParam Integer page) {
+    public List<User> list(@QueryParam Integer page, @QueryParam Integer size, @QueryParam String order) {
         if (Optional.ofNullable(page).isEmpty()) page=1;
-        return userService.fetchUsers(page);
+        if (Optional.ofNullable(size).isEmpty()) size=100;
+        if (Optional.ofNullable(order).isEmpty()) order="desc";
+        return userService.fetchUsers(page, size, order);
     }
 
     @GET
